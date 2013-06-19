@@ -19,10 +19,7 @@ int main()
 
 Compile and run:
 ```
-prompt>cl -nologo -W3 -EHsc -I../src example1.cpp ../src/eng_format.cpp && example1
-example1.cpp
-eng_format.cpp
-Generating Code...
+prompt>g++ -Wall -Wextra -I../src -o example1.exe example1.cpp ../src/eng_format.cpp && example1
 1.23 kPa
 ```
 
