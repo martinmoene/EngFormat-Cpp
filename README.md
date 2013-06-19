@@ -23,8 +23,8 @@ prompt>g++ -Wall -Wextra -I../src -o example1.exe example1.cpp ../src/eng_format
 1.23 kPa
 ```
 
-The basic C++ interface
------------------------
+Basic C++ interface
+-------------------
 ```Cpp
 /**
  * convert a double to the specified number of digits in SI (prefix) or
