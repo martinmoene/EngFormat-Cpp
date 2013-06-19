@@ -47,7 +47,7 @@ int main()
        "to_engineering_string( 1e-23, 3, eng_prefixed ): '" << to_engineering_string( 1e-23, 3, eng_prefixed ) << "'\n" << std::endl;
 
 
-    for ( int i = -24; i < +24; ++i )
+    for ( int i = -24; i <= +24; ++i )
     {
         const double x = +1.00 * pow(10.0,i);
 
@@ -59,8 +59,8 @@ int main()
 
         std::cout <<
             result << "\t" <<
-            x      << "     \t" <<
-            y      << "     \t" <<
+            x      << "       \t" <<
+            y      << "       \t" <<
             "'"    << text_inp  << "'     \t" <<
             "'"    << text_out  << "'" << std::endl;
     }
