@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Engineering Formatter" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="default">
+				<Option output="expected" prefix_auto="1" extension_auto="1" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+			</Target>
+		</Build>
+		<Compiler>
+			<Add directory="$(PROJECT_DIR)../../src" />
+		</Compiler>
+		<Unit filename="../../LICENSE.txt" />
+		<Unit filename="../../README.md" />
+		<Unit filename="../../demo/demo_eng_format.cpp" />
+		<Unit filename="../../src/eng_format.cpp" />
+		<Unit filename="../../src/eng_format.hpp" />
+		<Unit filename="../../test/test_eng_format.cpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
