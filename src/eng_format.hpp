@@ -45,7 +45,7 @@ std::string
 step_engineering_string( std::string text, int digits, bool exponential, bool positive );
 
 //
-// Convenience functions:
+// Extended interface:
 //
 
 /**
@@ -60,6 +60,19 @@ step_engineering_string( std::string text, int digits, bool exponential, bool po
 
 extern struct eng_prefixed_t {} eng_prefixed;
 extern struct eng_exponential_t {} eng_exponential;
+
+/**
+ * \var eng_positive
+ * \brief let step_engineering_string() make a postive step.
+ */
+
+/**
+ * \var eng_negative
+ * \brief let step_engineering_string() make a negative step.
+ */
+
+const bool eng_positive = true;
+const bool eng_negative = false;
 
 /**
  * convert a double to the specified number of digits in SI (prefix) notation,
