@@ -52,7 +52,7 @@ int main()
        "step_engineering_string(\"1.00 k\", 3, eng_prefixed, eng_positive ): '" <<
         step_engineering_string( "1.00 k" , 3, eng_prefixed, eng_positive ) << "'\n" << std::endl;
 
-    for ( int i = -24; i < +24; ++i )
+    for ( int i = -24; i <= +24; ++i )
     {
         const double x = +1.00 * pow(10.0,i);
 
@@ -64,8 +64,8 @@ int main()
 
         std::cout <<
             result << "\t" <<
-            x      << "     \t" <<
-            y      << "     \t" <<
+            x      << "       \t" <<
+            y      << "       \t" <<
             "'"    << text_inp  << "'     \t" <<
             "'"    << text_out  << "'" << std::endl;
     }
