@@ -254,8 +254,14 @@ std::string prefix2exponent( std::string const pfx )
 }
 
 /*
- * "1.23 M" => "1.23e+006"
- * omits everything after prefix.
+ * Convert engineering presentation to presentation with exponent.
+ *
+ * The engineering presentation should not contain a unit, as the first letter
+ * is interpreted as an SI prefix, e.g. "1 T" is 1e12, not 1 (Tesla).
+ *
+ * "1.23 M"   => 1.23e+6
+ * "1.23 kPa" => 1.23e+3  (ok, but not recommended)
+ * "1.23 Pa"  => 1.23e+12 (not what's intended!)
  */
 std::string eng2exp( std::string const text )
 {
@@ -266,7 +272,10 @@ std::string eng2exp( std::string const text )
         return text;
     }
 
-    return text.substr( 0, pos ) + prefix2exponent( text.substr( pos + 1, 1 ) );
+    const std::string magnitude  = text.substr( 0, pos );
+    const std::string prefix     = text.substr( pos + 1, 1 );
+
+    return magnitude + prefix2exponent( prefix );
 }
 
 } // anonymous namespace
