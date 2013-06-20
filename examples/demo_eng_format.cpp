@@ -49,8 +49,8 @@ int main()
        "to_engineering_string( 1234, 3, eng_prefixed, \"Pa\" ): '" <<
         to_engineering_string( 1234, 3, eng_prefixed,  "Pa"  ) << "'\n" <<
 
-       "step_engineering_string(\"1.00 k\", 3, eng_prefixed, eng_positive ): '" <<
-        step_engineering_string( "1.00 k" , 3, eng_prefixed, eng_positive ) << "'\n" << std::endl;
+       "step_engineering_string(\"1.00 k\", 3, eng_prefixed, eng_increment ): '" <<
+        step_engineering_string( "1.00 k" , 3, eng_prefixed, eng_increment ) << "'\n" << std::endl;
 
     for ( int i = -24; i <= +24; ++i )
     {

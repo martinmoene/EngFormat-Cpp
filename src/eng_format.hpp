@@ -42,7 +42,7 @@ from_engineering_string( std::string text );
  * step a value by the smallest possible increment.
  */
 std::string
-step_engineering_string( std::string text, int digits, bool exponential, bool positive );
+step_engineering_string( std::string text, int digits, bool exponential, bool increment );
 
 //
 // Extended interface:
@@ -62,17 +62,17 @@ extern struct eng_prefixed_t {} eng_prefixed;
 extern struct eng_exponential_t {} eng_exponential;
 
 /**
- * \var eng_positive
+ * \var eng_increment
  * \brief let step_engineering_string() make a postive step.
  */
 
 /**
- * \var eng_negative
+ * \var eng_decrement
  * \brief let step_engineering_string() make a negative step.
  */
 
-const bool eng_positive = true;
-const bool eng_negative = false;
+const bool eng_increment = true;
+const bool eng_decrement = false;
 
 /**
  * convert a double to the specified number of digits in SI (prefix) notation,
@@ -98,18 +98,18 @@ to_engineering_string( double value, int digits, eng_exponential_t, std::string 
  * step a value by the smallest possible increment, using SI notation.
  */
 inline std::string
-step_engineering_string( std::string text, int digits, eng_prefixed_t, bool positive )
+step_engineering_string( std::string text, int digits, eng_prefixed_t, bool increment )
 {
-    return step_engineering_string( text, digits, false, positive );
+    return step_engineering_string( text, digits, false, increment );
 }
 
 /**
  * step a value by the smallest possible increment, using exponential notation.
  */
 inline std::string
-step_engineering_string( std::string text, int digits, eng_exponential_t, bool positive )
+step_engineering_string( std::string text, int digits, eng_exponential_t, bool increment )
 {
-    return step_engineering_string( text, digits, true, positive );
+    return step_engineering_string( text, digits, true, increment );
 }
 
 #endif // ENG_FORMAT_H_INCLUDED

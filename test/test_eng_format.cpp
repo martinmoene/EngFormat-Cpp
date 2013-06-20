@@ -148,20 +148,20 @@ TEST( round_trip )
 
 TEST( step )
 {
-    assert( "1.01 "  == step_engineering_string( "1.0"  , 3, eng_prefixed, eng_positive ) );
-    assert( "1.01e0" == step_engineering_string( "1.0"  , 3, eng_exponential, eng_positive ) );
+    assert( "1.01 "  == step_engineering_string( "1.0"  , 3, eng_prefixed, eng_increment ) );
+    assert( "1.01e0" == step_engineering_string( "1.0"  , 3, eng_exponential, eng_increment ) );
 
-    assert( "1.01 k" == step_engineering_string( "1.0 k", 3, eng_prefixed, eng_positive ) );
-    assert( "1.01e3" == step_engineering_string( "1.0 k", 3, eng_exponential, eng_positive ) );
+    assert( "1.01 k" == step_engineering_string( "1.0 k", 3, eng_prefixed, eng_increment ) );
+    assert( "1.01e3" == step_engineering_string( "1.0 k", 3, eng_exponential, eng_increment ) );
 
-    assert( "990 m"  == step_engineering_string( "1.0"  , 3, eng_prefixed, eng_negative ) );
-    assert( "990e-3" == step_engineering_string( "1.0"  , 3, eng_exponential, eng_negative ) );
+    assert( "990 m"  == step_engineering_string( "1.0"  , 3, eng_prefixed, eng_decrement ) );
+    assert( "990e-3" == step_engineering_string( "1.0"  , 3, eng_exponential, eng_decrement ) );
 
-    assert( "990 k"  == step_engineering_string( "1.0 M", 3, eng_prefixed, eng_negative ) );
-    assert( "990e3"  == step_engineering_string( "1.0 M", 3, eng_exponential, eng_negative ) );
+    assert( "990 k"  == step_engineering_string( "1.0 M", 3, eng_prefixed, eng_decrement ) );
+    assert( "990e3"  == step_engineering_string( "1.0 M", 3, eng_exponential, eng_decrement ) );
 
-    assert( "990 "   == step_engineering_string( "1.0 k", 3, eng_prefixed, eng_negative ) );
-    assert( "990e0"  == step_engineering_string( "1.0 k", 3, eng_exponential, eng_negative ) );
+    assert( "990 "   == step_engineering_string( "1.0 k", 3, eng_prefixed, eng_decrement ) );
+    assert( "990e0"  == step_engineering_string( "1.0 k", 3, eng_exponential, eng_decrement ) );
 };
 
 int main()
