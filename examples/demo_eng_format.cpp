@@ -43,9 +43,14 @@ bool approx( double const a, double const b )
 int main()
 {
     std::cout <<
-       "to_engineering_string( 1234, 3, eng_prefixed, \"Pa\" ): '" << to_engineering_string( 1234, 3, eng_prefixed, "Pa") << "'" << std::endl <<
-       "to_engineering_string( 1e-23, 3, eng_prefixed ): '" << to_engineering_string( 1e-23, 3, eng_prefixed ) << "'\n" << std::endl;
+       "to_engineering_string( 1e-23, 3, eng_prefixed ): '" <<
+        to_engineering_string( 1e-23, 3, eng_prefixed ) << "'\n" <<
 
+       "to_engineering_string( 1234, 3, eng_prefixed, \"Pa\" ): '" <<
+        to_engineering_string( 1234, 3, eng_prefixed,  "Pa"  ) << "'\n" <<
+
+       "step_engineering_string(\"1.00 k\", 3, eng_prefixed, eng_positive ): '" <<
+        step_engineering_string( "1.00 k" , 3, eng_prefixed, eng_positive ) << "'\n" << std::endl;
 
     for ( int i = -24; i < +24; ++i )
     {
