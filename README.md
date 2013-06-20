@@ -53,6 +53,9 @@ Expanded C++ interface
 extern struct eng_prefixed_t {} eng_prefixed;
 extern struct eng_exponential_t {} eng_exponential;
 
+const bool eng_positive = true;
+const bool eng_negative = false;
+
 /**
  * convert a double to the specified number of digits in SI (prefix) notation,
  * optionally followed by a unit.
