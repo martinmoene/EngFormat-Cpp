@@ -25,6 +25,7 @@
 #include <iomanip>
 #include <sstream>
 
+#include <float.h>
 #include <math.h>
 #include <stdlib.h>
 
@@ -50,159 +51,77 @@
 eng_prefixed_t eng_prefixed;
 eng_exponential_t eng_exponential;
 
-/*
- * Smallest power of ten for which there is a prefix defined.
- * If the set of prefixes will be extended, change this constant
- * and update the table "prefix".
- */
-
 namespace
 {
 
-char const * prefix[] =
+char const * const prefixes[/*exp*/][2][9] =
 {
-    "y", "z", "a", "f",
-    "p", "n", ENG_FORMAT_MICRO_GLYPH, "m",
-    "", "k", "M", "G",
-    "T", "P", "E", "Z",
-    "Y",
+    {
+        {   "",   "m",   ENG_FORMAT_MICRO_GLYPH
+                            ,   "n",    "p",    "f",    "a",    "z",    "y", },
+        {   "",   "k",   "M",   "G",    "T",    "P",    "E",    "Z",    "Y", },
+    },
+    {
+        { "e0", "e-3", "e-6", "e-9", "e-12", "e-15", "e-18", "e-21", "e-24", },
+        { "e0",  "e3",  "e6",  "e9",  "e12",  "e15",  "e18",  "e21",  "e24", },
+    },
 };
 
-char const * exponent[] =
+const int prefix_count = ENG_FORMAT_DIMENSION_OF( prefixes[false][false]  );
+
+int sign( int const value )
 {
-    "e-24", "e-21", "e-18", "e-15",
-    "e-12", "e-9" , "e-6" , "e-3" ,
-    ""   , "e3"  , "e6"  , "e9"  ,
-    "e12" , "e15" , "e18" , "e21" ,
-    "e24" ,
-};
+    return value == 0 ? +1 : value / abs( value );
+}
 
-const int prefix_count = ENG_FORMAT_DIMENSION_OF( prefix );
-const int prefix_start = -24;
-const int prefix_end   = prefix_start + 3 * ( prefix_count - 1 );
+int precision( double const scaled, int const digits )
+{
+    return digits - log10( fabs( scaled ) ) - DBL_EPSILON;
+}
 
-#if __cplusplus >= 201103L       // C++11
-static_assert( ENG_FORMAT_DIMENSION_OF( prefix ) == ENG_FORMAT_DIMENSION_OF( exponent ), "table sizes must match" );
-#endif
+std::string prefix_or_exponent( bool const exponential, int const degree )
+{
+    return std::string( exponential ? "" : " " ) + prefixes[ exponential ][ sign(degree) > 0 ][ abs( degree ) ];
+}
 
 /*
  * engineering to exponent notation conversion.
  */
-std::string eng2exp( std::string text );
+std::string engineering_to_exponent( std::string text );
 
 } // anonymous namespace
-
-#ifdef _MSC_VER
-
-namespace
-{
-
-#if 1
-template <typename T>
-long lrint( T const x )
-{
-    return static_cast<long>( x );
-}
-#else
-__inline long int
-lrint ( double flt )
-{
-    int intgr ;
-
-    _asm
-    {
-        fld flt
-        fistp intgr
-    } ;
-
-    return intgr ;
-}
-#endif
-} // anonymous namespace
-
-#endif
 
 /**
  * convert real number to prefixed or exponential notation, optionally followed by a unit.
  */
 std::string
-to_engineering_string( double value, int digits, bool const exponential, std::string const unit /*= ""*/ )
+to_engineering_string( double const value, int const digits, bool exponential, std::string const unit /*= ""*/ )
 {
-    if ( digits < 3 )
-    {
-        digits = 3;
-    }
+    const int degree = static_cast<int>( floor( log10( fabs( value ) ) / 3) );
 
-    char const * sign;
+    std::string factor;
 
-    if ( value < 0.0 )
+    if ( abs( degree ) < prefix_count )
     {
-        sign = "-";
-        value = fabs( value );
+        factor = prefix_or_exponent( exponential, degree );
     }
     else
     {
-        sign = "";
-    }
-
-    // correctly round to desired precision
-    int expof10 = lrint( floor( log10( value ) ) );
-
-    const int power = digits - 1 - expof10;
-    value *= pow( 10.0, power );
-
-    double display;
-    const double fract = modf( value, &display );
-
-    if ( fract >= 0.5 )
-    {
-        display += 1.0;
-    }
-
-    value = display * pow( 10.0, -power );  //  expof10 - digits + 1
-
-    if ( expof10 > 0 )
-    {
-        expof10 = ( expof10 / 3 ) * 3;
-    }
-    else
-    {
-        expof10 = ( ( -expof10 + 3 ) / 3 ) * ( -3 );
-    }
-
-    value *= pow( 10.0, -expof10 );
-
-    if ( value >= 1000.0 )
-    {
-        value /= 1000.0;
-        expof10 += 3;
-    }
-    else
-    {
-        if( value >= 100.0 )
-        {
-            digits -= 2;
-        }
-        else
-        {
-            if( value >= 10.0 )
-            {
-                digits -= 1;
-            }
-        }
+        exponential = true;
+        std::ostringstream os;
+        os << "e" << 3 * degree;
+        factor = os.str();
     }
 
     std::ostringstream os;
 
-    if( exponential || ( expof10 < prefix_start ) || ( expof10 > prefix_end ) )
-    {
-        os << sign << std::fixed << std::setprecision( digits - 1 ) << value << "e" << expof10 << ( unit.length() ? " " : "" );
-    }
-    else
-    {
-        os << sign << std::fixed << std::setprecision( digits - 1 ) << value << " " << prefix[( expof10 - prefix_start ) / 3];
-    }
-    return os.str() + unit;
+    const double scaled = value * pow( 1000, -degree );
+
+    const std::string space = exponential && unit.length() ? " ":"";
+
+    os << std::fixed << std::setprecision( precision( scaled, digits ) ) << scaled << factor << space << unit;
+
+    return os.str();
 }
 
 /**
@@ -210,7 +129,7 @@ to_engineering_string( double value, int digits, bool const exponential, std::st
  */
 double from_engineering_string( std::string const text )
 {
-    return strtod( eng2exp( text ).c_str(), NULL );
+    return strtod( engineering_to_exponent( text ).c_str(), NULL );
 }
 
 /**
@@ -241,13 +160,16 @@ namespace
 /*
  * "k" => "1e3"
  */
-std::string prefix2exponent( std::string const pfx )
+std::string prefix_to_exponent( std::string const pfx )
 {
-    for( int i = 0; i < prefix_count; ++i )
+    for ( int i = 0; i < 2; ++i )
     {
-        if ( pfx == prefix[i] )
+        for( int k = 0; k < prefix_count; ++k )
         {
-            return exponent[i];
+            if ( pfx == prefixes[0][i][k] )
+            {
+                return prefixes[1][i][k] ;
+            }
         }
     }
     return "";
@@ -263,7 +185,7 @@ std::string prefix2exponent( std::string const pfx )
  * "1.23 kPa" => 1.23e+3  (ok, but not recommended)
  * "1.23 Pa"  => 1.23e+12 (not what's intended!)
  */
-std::string eng2exp( std::string const text )
+std::string engineering_to_exponent( std::string const text )
 {
     std::string::size_type pos = text.find( ' ' );
 
@@ -272,10 +194,10 @@ std::string eng2exp( std::string const text )
         return text;
     }
 
-    const std::string magnitude  = text.substr( 0, pos );
-    const std::string prefix     = text.substr( pos + 1, 1 );
+    const std::string magnitude = text.substr( 0, pos );
+    const std::string prefix    = text.substr( pos + 1, 1 );
 
-    return magnitude + prefix2exponent( prefix );
+    return magnitude + prefix_to_exponent( prefix );
 }
 
 } // anonymous namespace

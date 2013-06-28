@@ -3,7 +3,7 @@ EngFormat-Cpp
 
 C++ based Engineering Notation Formatter
 
-The C++ engineering formatter presented here is based on the code by Jukka Korpela and David Hoerl as available from the project [EngineeringNotationFormatter](https://github.com/dhoerl/EngineeringNotationFormatter) [1] on GitHub.
+The C++ engineering formatter presented here is partly based on [code found on stackoverflow](http://stackoverflow.com/a/15734251/437272) and partly based on the code by Jukka Korpela and David Hoerl as available from the project [EngineeringNotationFormatter](https://github.com/dhoerl/EngineeringNotationFormatter) [1] on GitHub.
 
 Example usage
 -------------
