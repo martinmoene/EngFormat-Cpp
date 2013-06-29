@@ -87,6 +87,13 @@ std::string prefix_or_exponent( bool const exponential, int const degree )
     return std::string( exponential ? "" : " " ) + prefixes[ exponential ][ sign(degree) > 0 ][ abs( degree ) ];
 }
 
+std::string exponent( int const degree )
+{
+    std::ostringstream os;
+    os << "e" << 3 * degree;
+    return os.str();
+}
+
 #if defined( _MSC_VER )
 
 template <typename T>
@@ -121,9 +128,7 @@ to_engineering_string( double const value, int const digits, bool exponential, s
     else
     {
         exponential = true;
-        std::ostringstream os;
-        os << "e" << 3 * degree;
-        factor = os.str();
+        factor = exponent( degree );
     }
 
     std::ostringstream os;
