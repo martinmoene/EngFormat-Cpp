@@ -76,13 +76,26 @@ int sign( int const value )
 
 int precision( double const scaled, int const digits )
 {
-    return digits - log10( fabs( scaled ) ) - DBL_EPSILON;
+    // MSVC6 requires -2 * DBL_EPSILON;
+    //g++ 4.8.1: ok with -1 * DBL_EPSILON
+
+    return digits - log10( fabs( scaled ) ) - 2 * DBL_EPSILON;
 }
 
 std::string prefix_or_exponent( bool const exponential, int const degree )
 {
     return std::string( exponential ? "" : " " ) + prefixes[ exponential ][ sign(degree) > 0 ][ abs( degree ) ];
 }
+
+#if defined( _MSC_VER )
+
+template <typename T>
+long lrint( T const x )
+{
+    return static_cast<long>( floor( x + ( x > 0 ) ? 0.5 : -0.5 ) );
+}
+
+#endif
 
 /*
  * engineering to exponent notation conversion.
@@ -125,7 +138,7 @@ to_engineering_string( double const value, int const digits, bool exponential, s
 }
 
 /**
- * convert the output of real2eng() into a double.
+ * convert the output of to_engineering_string() into a double.
  */
 double from_engineering_string( std::string const text )
 {
@@ -139,7 +152,7 @@ std::string step_engineering_string( std::string const text, int digits, bool co
 {
     const double value = from_engineering_string( text );
 
-    if( digits < 3 )
+    if ( digits < 3 )
     {
         digits = 3;
     }
