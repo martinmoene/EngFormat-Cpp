@@ -17,6 +17,7 @@
 		<Unit filename="../../LICENSE.txt" />
 		<Unit filename="../../README.md" />
 		<Unit filename="../../examples/demo_eng_format.cpp" />
+		<Unit filename="../../examples/demo_factors.cpp" />
 		<Unit filename="../../examples/example1.cpp" />
 		<Unit filename="../../src/eng_format.cpp" />
 		<Unit filename="../../src/eng_format.hpp" />
