@@ -3,7 +3,7 @@ EngFormat-Cpp
 
 C++ based Engineering Notation Formatter
 
-The C++ engineering formatter presented here is partly based on [code found on stackoverflow](http://stackoverflow.com/a/15734251/437272) and partly based on the code by Jukka Korpela and David Hoerl as available from the project [EngineeringNotationFormatter](https://github.com/dhoerl/EngineeringNotationFormatter) [1] on GitHub.
+The C++ engineering formatter presented here is partly based on [code found on stackoverflow](http://stackoverflow.com/a/15734251/437272) [1] and partly based on the code by Jukka Korpela and David Hoerl as available from the project [EngineeringNotationFormatter](https://github.com/dhoerl/EngineeringNotationFormatter) [2] on GitHub.
 
 Example usage
 -------------
@@ -86,6 +86,6 @@ step_engineering_string( std::string text, int digits, eng_exponential_t, bool i
 Notes and References
 --------------------
 
-[1] David Hoerl. [EngineeringNotationFormatter](https://github.com/dhoerl/EngineeringNotationFormatter). iOS Project demoing C-based Engineering Notation Formatter.
+[1] [scls](http://stackoverflow.com/users/1609077/scls). [Convert float number to string with engineering notation (with SI prefixe) in Python [closed]](http://stackoverflow.com/questions/15733772/convert-float-number-to-string-with-engineering-notation-with-si-prefixe-in-py). StackOverflow.
 
-[2] Mark Harris. C/C++ Programming Tips, [Fast Float -> Int casts](http://wwwx.cs.unc.edu/~sud/tips/Programming_Tips.html)
+[2] David Hoerl. [EngineeringNotationFormatter](https://github.com/dhoerl/EngineeringNotationFormatter). iOS Project demoing C-based Engineering Notation Formatter.
