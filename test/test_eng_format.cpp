@@ -43,35 +43,35 @@ bool approx( double const a, double const b )
 
     return fabs(a - b) < epsilon * (scale + (std::max)( fabs(a), fabs(b) ) );
 #else
-	double dbls[2] = { a, b };
+    double dbls[2] = { a, b };
 
-	for ( int i = 0; i < 2; ++i )
-	{
-		int classify = std::fpclassify( dbls[i] );
+    for ( int i = 0; i < 2; ++i )
+    {
+        int classify = std::fpclassify( dbls[i] );
 
-		if ( classify != FP_NORMAL )
-		{
-			switch( classify )
-			{
-			case FP_SUBNORMAL:
-				std::cout << "FP Error: subnormal!" << std::endl;
-				return false;
-			case FP_ZERO:
-				break;
-			case FP_INFINITE:
-				std::cout << "FP Error: Infinite!" << std::endl;
-				return false;
-			case FP_NAN:
-				std::cout << "FP Error: NaN!" << std::endl;
-				return false;
-			default:
-				std::cout << "FP Error: unknown!" << std::endl;
-				return false;
-			}
-		}
-	}
+        if ( classify != FP_NORMAL )
+        {
+            switch( classify )
+            {
+            case FP_SUBNORMAL:
+                std::cout << "FP Error: subnormal!" << std::endl;
+                return false;
+            case FP_ZERO:
+                break;
+            case FP_INFINITE:
+                std::cout << "FP Error: Infinite!" << std::endl;
+                return false;
+            case FP_NAN:
+                std::cout << "FP Error: NaN!" << std::endl;
+                return false;
+            default:
+                std::cout << "FP Error: unknown!" << std::endl;
+                return false;
+            }
+        }
+    }
 
-	return ! std::isnormal( a - b );
+    return ! std::isnormal( a - b );
 #endif
 }
 
