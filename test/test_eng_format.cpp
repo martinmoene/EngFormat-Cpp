@@ -21,9 +21,7 @@
 #include "lest.hpp"
 #include "eng_format.hpp"
 
-#include <cassert>
 #include <cmath>
-#include <cstdlib>
 #include <iostream>
 #include <limits>
 #include <string>
@@ -253,8 +251,8 @@ std::cout << "'" << to_engineering_string( 99.951e-21, 3, eng_prefixed ) << "'" 
 
     "step up succeeds for string without prefix or exponent", []()
     {
-        ASSERT2( "1.01"  , step_engineering_string( "1.0"  , 3, eng_prefixed, eng_increment ) );
-        ASSERT2( "1.01e0", step_engineering_string( "1.0"  , 3, eng_exponential, eng_increment ) );
+        ASSERT2( "1.01"  , step_engineering_string( "1.0"   , 3, eng_prefixed, eng_increment ) );
+        ASSERT2( "1.01e0", step_engineering_string( "1.0"   , 3, eng_exponential, eng_increment ) );
     },
 
     "step down succeeds for string without prefix or exponent", []()
@@ -265,14 +263,14 @@ std::cout << "'" << to_engineering_string( 99.951e-21, 3, eng_prefixed ) << "'" 
 
     "step up succeeds for string with zero value", []()
     {
-        ASSERT2( "10.0 m", step_engineering_string( "0.0"  , 3, eng_prefixed, eng_increment ) );
+        ASSERT2( "10.0 m" , step_engineering_string( "0.0"  , 3, eng_prefixed, eng_increment ) );
         ASSERT2( "10.0e-3", step_engineering_string( "0.0"  , 3, eng_exponential, eng_increment ) );
     },
 
     "step up succeeds for string with prefix", []()
     {
-        ASSERT2( "1.01 k", step_engineering_string( "1.0 k", 3, eng_prefixed, eng_increment ) );
-        ASSERT2( "1.01e3", step_engineering_string( "1.0 k", 3, eng_exponential, eng_increment ) );
+        ASSERT2( "1.01 k", step_engineering_string( "1.0 k" , 3, eng_prefixed, eng_increment ) );
+        ASSERT2( "1.01e3", step_engineering_string( "1.0 k" , 3, eng_exponential, eng_increment ) );
     },
 
     "step down succeeds for string with prefix", []()
@@ -283,8 +281,8 @@ std::cout << "'" << to_engineering_string( 99.951e-21, 3, eng_prefixed ) << "'" 
 
     "step up succeeds for string with exponent", []()
     {
-        ASSERT2( "1.01 k", step_engineering_string( "1.0e3", 3, eng_prefixed, eng_increment ) );
-        ASSERT2( "1.01e3", step_engineering_string( "1.0e3", 3, eng_exponential, eng_increment ) );
+        ASSERT2( "1.01 k", step_engineering_string( "1.0e3" , 3, eng_prefixed, eng_increment ) );
+        ASSERT2( "1.01e3", step_engineering_string( "1.0e3" , 3, eng_exponential, eng_increment ) );
     },
 
     "step down succeeds for string with exponent", []()
@@ -295,7 +293,7 @@ std::cout << "'" << to_engineering_string( 99.951e-21, 3, eng_prefixed ) << "'" 
 
     "step up to prefix 'k' succeeds for string without prefix", []()
     {
-        ASSERT2( "1.00 k", step_engineering_string( "999"  , 3, eng_prefixed, eng_increment ) );
+        ASSERT2( "1.00 k", step_engineering_string( "999"   , 3, eng_prefixed, eng_increment ) );
     },
 
     "step down to loose prefix succeeds for string with prefix 'k'", []()
@@ -305,25 +303,25 @@ std::cout << "'" << to_engineering_string( 99.951e-21, 3, eng_prefixed ) << "'" 
 
     "step up to loose prefix succeeds for string with prefix 'm'", []()
     {
-        ASSERT2( "1.00" , step_engineering_string( "999 m", 3, eng_prefixed, eng_increment ) );
+        ASSERT2( "1.00" , step_engineering_string( "999 m"  , 3, eng_prefixed, eng_increment ) );
     },
 
     "step down to use prefix or exponent succeeds for string without prefix", []()
     {
-        ASSERT2( "990 m" , step_engineering_string( "1.0"  , 3, eng_prefixed, eng_decrement ) );
-        ASSERT2( "990e-3", step_engineering_string( "1.0"  , 3, eng_exponential, eng_decrement ) );
+        ASSERT2( "990 m" , step_engineering_string( "1.0"   , 3, eng_prefixed, eng_decrement ) );
+        ASSERT2( "990e-3", step_engineering_string( "1.0"   , 3, eng_exponential, eng_decrement ) );
     },
 
     "step up to next prefix or exponent succeeds for string with prefix", []()
     {
-        ASSERT2( "1.00 G", step_engineering_string( "999 M", 3, eng_prefixed, eng_increment ) );
-        ASSERT2( "1.00e9", step_engineering_string( "999 M", 3, eng_exponential, eng_increment ) );
+        ASSERT2( "1.00 G", step_engineering_string( "999 M" , 3, eng_prefixed, eng_increment ) );
+        ASSERT2( "1.00e9", step_engineering_string( "999 M" , 3, eng_exponential, eng_increment ) );
     },
 
     "step down to next prefix or exponent succeeds for string with prefix", []()
     {
-        ASSERT2( "990 k", step_engineering_string( "1.0 M", 3, eng_prefixed, eng_decrement ) );
-        ASSERT2( "990e3", step_engineering_string( "1.0 M", 3, eng_exponential, eng_decrement ) );
+        ASSERT2( "990 k", step_engineering_string( "1.0 M"  , 3, eng_prefixed, eng_decrement ) );
+        ASSERT2( "990e3", step_engineering_string( "1.0 M"  , 3, eng_exponential, eng_decrement ) );
     },
 };
 
