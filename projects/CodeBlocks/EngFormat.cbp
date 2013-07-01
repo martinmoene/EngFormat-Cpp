@@ -14,6 +14,7 @@
 		<Compiler>
 			<Add directory="$(PROJECT_DIR)../../src" />
 		</Compiler>
+		<Unit filename="../../CHANGES.md" />
 		<Unit filename="../../LICENSE.txt" />
 		<Unit filename="../../README.md" />
 		<Unit filename="../../examples/demo_eng_format.cpp" />
