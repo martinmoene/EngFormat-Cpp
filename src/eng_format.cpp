@@ -87,8 +87,8 @@ int sign( int const value )
 
 bool is_zero( double const value )
 {
-#if __cpluplus >= 201103L
-    return FP_ZERO == std::fpclassify( value );
+#if __cplusplus >= 201103L
+    return FP_ZERO == fpclassify( value );
 #else
     // deliberately compare literally:
     return 0.0 == value;
@@ -106,7 +106,6 @@ int precision( double const scaled, int const digits )
     // g++ 4.8.1: ok with -1 * DBL_EPSILON
 
     return is_zero( scaled ) ? digits - 1 : digits - log10( fabs( scaled ) ) - DBL_EPSILON;
-//    return digits - log10( fabs( scaled ) ) ;
 }
 
 std::string prefix_or_exponent( bool const exponential, int const degree )
