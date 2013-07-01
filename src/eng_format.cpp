@@ -23,6 +23,7 @@
 #include "eng_format.hpp"
 
 #include <iomanip>
+#include <limits>
 #include <sstream>
 
 #include <float.h>
@@ -69,31 +70,6 @@ char const * const prefixes[/*exp*/][2][9] =
 
 const int prefix_count = ENG_FORMAT_DIMENSION_OF( prefixes[false][false]  );
 
-int sign( int const value )
-{
-    return value == 0 ? +1 : value / abs( value );
-}
-
-int precision( double const scaled, int const digits )
-{
-    // MSVC6 requires -2 * DBL_EPSILON;
-    //g++ 4.8.1: ok with -1 * DBL_EPSILON
-
-    return digits - log10( fabs( scaled ) ) - 2 * DBL_EPSILON;
-}
-
-std::string prefix_or_exponent( bool const exponential, int const degree )
-{
-    return std::string( exponential ? "" : " " ) + prefixes[ exponential ][ sign(degree) > 0 ][ abs( degree ) ];
-}
-
-std::string exponent( int const degree )
-{
-    std::ostringstream os;
-    os << "e" << 3 * degree;
-    return os.str();
-}
-
 #if defined( _MSC_VER )
 
 template <typename T>
@@ -103,6 +79,47 @@ long lrint( T const x )
 }
 
 #endif
+
+int sign( int const value )
+{
+    return value == 0 ? +1 : value / abs( value );
+}
+
+bool is_zero( double const value )
+{
+#if __cpluplus >= 201103L
+    return FP_ZERO == std::fpclassify( value );
+#else
+    // deliberately compare literally:
+    return 0.0 == value;
+#endif
+}
+
+long degree_of( double const value )
+{
+    return is_zero( value ) ? 0 : lrint( floor( log10( fabs( value ) ) / 3) );
+}
+
+int precision( double const scaled, int const digits )
+{
+    // MSVC6 requires -2 * DBL_EPSILON;
+    // g++ 4.8.1: ok with -1 * DBL_EPSILON
+
+    return is_zero( scaled ) ? digits - 1 : digits - log10( fabs( scaled ) ) - DBL_EPSILON;
+//    return digits - log10( fabs( scaled ) ) ;
+}
+
+std::string prefix_or_exponent( bool const exponential, int const degree )
+{
+    return std::string( exponential || 0 == degree ? "" : " " ) + prefixes[ exponential ][ sign(degree) > 0 ][ abs( degree ) ];
+}
+
+std::string exponent( int const degree )
+{
+    std::ostringstream os;
+    os << "e" << 3 * degree;
+    return os.str();
+}
 
 /*
  * engineering to exponent notation conversion.
@@ -117,7 +134,7 @@ std::string engineering_to_exponent( std::string text );
 std::string
 to_engineering_string( double const value, int const digits, bool exponential, std::string const unit /*= ""*/ )
 {
-    const int degree = static_cast<int>( floor( log10( fabs( value ) ) / 3) );
+    const int degree = degree_of( value );
 
     std::string factor;
 
@@ -163,7 +180,7 @@ std::string step_engineering_string( std::string const text, int digits, bool co
     }
 
     // correctly round to desired precision
-    const int expof10 = lrint( floor( log10( value ) ) );
+    const int expof10 = is_zero(value) ? 0 : lrint( floor( log10( value ) ) );
     const int   power = expof10 + 1 - digits;
 
     const double  inc = pow( 10.0, power ) * ( positive ? +1 : -1 );
