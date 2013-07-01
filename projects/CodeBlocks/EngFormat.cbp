@@ -21,6 +21,7 @@
 		<Unit filename="../../examples/example1.cpp" />
 		<Unit filename="../../src/eng_format.cpp" />
 		<Unit filename="../../src/eng_format.hpp" />
+		<Unit filename="../../test/lest.hpp" />
 		<Unit filename="../../test/test_eng_format.cpp" />
 		<Extensions>
 			<code_completion />
