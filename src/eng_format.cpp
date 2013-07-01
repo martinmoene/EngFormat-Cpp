@@ -95,6 +95,26 @@ bool is_zero( double const value )
 #endif
 }
 
+bool is_nan( double const value )
+{
+#if __cplusplus >= 201103L
+    return isnan( value );
+#else
+    // deliberately return false for now:
+    return false;
+#endif
+}
+
+bool is_inf( double const value )
+{
+#if __cplusplus >= 201103L
+    return isinf( value );
+#else
+    // deliberately return false for now:
+    return false;
+#endif
+}
+
 long degree_of( double const value )
 {
     return is_zero( value ) ? 0 : lrint( floor( log10( fabs( value ) ) / 3) );
@@ -133,6 +153,9 @@ std::string engineering_to_exponent( std::string text );
 std::string
 to_engineering_string( double const value, int const digits, bool exponential, std::string const unit /*= ""*/ )
 {
+    if      ( is_nan( value ) ) return "NaN";
+    else if ( is_inf( value ) ) return "INFINITE";
+
     const int degree = degree_of( value );
 
     std::string factor;

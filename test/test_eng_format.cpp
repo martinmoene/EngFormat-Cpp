@@ -165,10 +165,8 @@ std::cout << "'" << to_engineering_string( 99.951e-21, 3, eng_prefixed ) << "'" 
 
     "bad floating point number converts accordingly to string", []()
     {
-std::cout << "'" << to_engineering_string( strtod("NaN", NULL), 3, eng_prefixed ) << "'" << std::endl;
-        ASSERT2( "NaN"      , to_engineering_string( strtod("NaN", NULL), 3, eng_prefixed ) );
-std::cout << "'" << to_engineering_string( strtod("INFINITY", NULL), 3, eng_exponential ) << "'" << std::endl;
-        ASSERT2( "INFINITE" , to_engineering_string( strtod("INFINITY", NULL), 3, eng_exponential ) );
+        ASSERT2( "NaN"      , to_engineering_string( NAN     , 3, eng_prefixed ) );
+        ASSERT2( "INFINITE" , to_engineering_string( INFINITY, 3, eng_exponential ) );
 
 #pragma warning "FIX ME!"
         //ASSERT1( isnan(  from_engineering_string( " " ) ) );
