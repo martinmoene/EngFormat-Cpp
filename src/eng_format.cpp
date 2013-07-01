@@ -75,7 +75,7 @@ const int prefix_count = ENG_FORMAT_DIMENSION_OF( prefixes[false][false]  );
 template <typename T>
 long lrint( T const x )
 {
-    return static_cast<long>( floor( x + ( x > 0 ) ? 0.5 : -0.5 ) );
+    return static_cast<long>( x );
 }
 
 #endif
@@ -125,7 +125,7 @@ int precision( double const scaled, int const digits )
     // MSVC6 requires -2 * DBL_EPSILON;
     // g++ 4.8.1: ok with -1 * DBL_EPSILON
 
-    return is_zero( scaled ) ? digits - 1 : digits - log10( fabs( scaled ) ) - DBL_EPSILON;
+    return is_zero( scaled ) ? digits - 1 : digits - log10( fabs( scaled ) ) - 2 * DBL_EPSILON;
 }
 
 std::string prefix_or_exponent( bool const exponential, int const degree )
@@ -172,7 +172,7 @@ to_engineering_string( double const value, int const digits, bool exponential, s
 
     std::ostringstream os;
 
-    const double scaled = value * pow( 1000, -degree );
+    const double scaled = value * pow( 1000.0, -degree );
 
     const std::string space = exponential && unit.length() ? " ":"";
 

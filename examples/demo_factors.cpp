@@ -26,7 +26,7 @@ int main()
 {
     for ( int i = -27; i <= 27; ++i )
     {
-        const double x = pow(10,i);
+        const double x = pow( 10.0, i );
         std::cout << x << " '" << to_engineering_string( x, 3, eng_prefixed   , "V" ) << "'" << std::endl;
         std::cout << x << " '" << to_engineering_string( x, 3, eng_exponential, "V" ) << "'"<< std::endl;
     }
