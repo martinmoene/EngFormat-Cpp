@@ -174,7 +174,7 @@ to_engineering_string( double const value, int const digits, bool exponential, s
 
     const double scaled = value * pow( 1000.0, -degree );
 
-    const std::string space = exponential && unit.length() ? " ":"";
+    const std::string space = ( 0 == degree || exponential ) && unit.length() ? " ":"";
 
     os << std::fixed << std::setprecision( precision( scaled, digits ) ) << scaled << factor << space << unit;
 
