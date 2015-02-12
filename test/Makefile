@@ -19,12 +19,13 @@
 # THE SOFTWARE.
 
 SOURCES  = test_eng_format.cpp ../src/eng_format.cpp
+HEADERS  = ../src/eng_format.hpp
 
 OBJECTS  = $(patsubst %.cpp, %.o, $(SOURCES))
 
 CXXFLAGS = -Wall -Wextra -std=c++11 -Wno-missing-braces -DENG_FORMAT_MICRO_GLYPH=\"u\" -I../src
 
-test_eng_format: $(OBJECTS)
+test_eng_format: $(OBJECTS) $(HEADERS)
 	$(CXX) -o $@ $^
 
 clean:
