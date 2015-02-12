@@ -30,7 +30,7 @@
  * exponential notation, optionally followed by a unit.
  */
 std::string
-to_engineering_string( double value, int digits, bool exponential, std::string unit = "" );
+to_engineering_string( double value, int digits, bool exponential, std::string unit = "", bool include_space = true );
 
 /**
  * convert the output of to_engineering_string() into a double.
@@ -79,9 +79,9 @@ const bool eng_decrement = false;
  * optionally followed by a unit.
  */
 inline std::string
-to_engineering_string( double value, int digits, eng_prefixed_t, std::string unit = "" )
+to_engineering_string( double value, int digits, eng_prefixed_t, std::string unit = "", bool include_space = true )
 {
-    return to_engineering_string( value, digits, false, unit );
+    return to_engineering_string( value, digits, false, unit, include_space );
 }
 
 /**

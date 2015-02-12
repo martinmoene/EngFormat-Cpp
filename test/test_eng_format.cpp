@@ -100,6 +100,12 @@ const lest::test specification[] =
         ASSERT2( "123e0", to_engineering_string( 123, 3, eng_exponential ) );
     },
 
+    "number converts well to string without spaces", []()
+    {
+        ASSERT2( "1.23k", to_engineering_string( 1230, 3, false, "", false ) );
+        ASSERT2( "1.23k", to_engineering_string( 1230, 3, eng_prefixed, "", false ) );
+    },
+
     "string using prefix converts well to number", []()
     {
         ASSERT1( approx( 98.76e-3, from_engineering_string( "98.76 m" ) ) );
