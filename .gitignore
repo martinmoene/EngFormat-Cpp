@@ -2,6 +2,7 @@
 *.bak
 *.bmarks
 *.layout
+.*.swp
 
 # Compiled Object files
 *.slo
