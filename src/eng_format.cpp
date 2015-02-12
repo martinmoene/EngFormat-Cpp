@@ -128,9 +128,9 @@ int precision( double const scaled, int const digits )
     return is_zero( scaled ) ? digits - 1 : digits - log10( fabs( scaled ) ) - 2 * DBL_EPSILON;
 }
 
-std::string prefix_or_exponent( bool const exponential, int const degree )
+std::string prefix_or_exponent( bool const exponential, int const degree, std::string separator )
 {
-    return std::string( exponential || 0 == degree ? "" : " " ) + prefixes[ exponential ][ sign(degree) > 0 ][ abs( degree ) ];
+    return std::string( exponential || 0 == degree ? "" : separator ) + prefixes[ exponential ][ sign(degree) > 0 ][ abs( degree ) ];
 }
 
 std::string exponent( int const degree )
@@ -151,7 +151,7 @@ std::string engineering_to_exponent( std::string text );
  * convert real number to prefixed or exponential notation, optionally followed by a unit.
  */
 std::string
-to_engineering_string( double const value, int const digits, bool exponential, std::string const unit /*= ""*/ )
+to_engineering_string( double const value, int const digits, bool exponential, std::string const unit /*= ""*/, std::string separator /*= " "*/ )
 {
     if      ( is_nan( value ) ) return "NaN";
     else if ( is_inf( value ) ) return "INFINITE";
@@ -162,7 +162,7 @@ to_engineering_string( double const value, int const digits, bool exponential, s
 
     if ( abs( degree ) < prefix_count )
     {
-        factor = prefix_or_exponent( exponential, degree );
+        factor = prefix_or_exponent( exponential, degree, separator );
     }
     else
     {
@@ -174,7 +174,7 @@ to_engineering_string( double const value, int const digits, bool exponential, s
 
     const double scaled = value * pow( 1000.0, -degree );
 
-    const std::string space = ( 0 == degree || exponential ) && unit.length() ? " ":"";
+    const std::string space = ( 0 == degree || exponential ) && unit.length() ? separator : "";
 
     os << std::fixed << std::setprecision( precision( scaled, digits ) ) << scaled << factor << space << unit;
 
