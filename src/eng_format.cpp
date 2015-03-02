@@ -141,6 +141,15 @@ std::string exponent( int const degree )
     return os.str();
 }
 
+char const * first_non_space( char const * text )
+{
+    while ( *text && isspace( *text ) )
+    {
+        ++text;
+    }
+    return text;
+}
+
 bool starts_with( std::string const text, std::string const start )
 {
     return 0 == text.find( start );
@@ -214,15 +223,9 @@ to_engineering_string( double const value, int const digits, bool exponential, s
 double from_engineering_string( std::string const text )
 {
     char * tail;
-    double magnitude = strtod( text.c_str(), &tail );
+    const double magnitude = strtod( text.c_str(), &tail );
 
-    // skip any whitespace between magnitude and SI prefix
-    while ( *tail && isspace( *tail ) )  
-    {
-        ++tail;
-    }
-
-    return magnitude * pow( 10.0, prefix_to_exponent( tail ) );
+    return magnitude * pow( 10.0, prefix_to_exponent( first_non_space( tail ) ) );
 }
 
 /**
