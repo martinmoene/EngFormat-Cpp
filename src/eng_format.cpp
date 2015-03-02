@@ -192,9 +192,10 @@ to_engineering_string( double const value, int const digits, bool exponential, s
 double from_engineering_string( std::string const text )
 {
     char * tail;
-    double magnitude = strtod ( text.c_str(), &tail );
+    double magnitude = strtod( text.c_str(), &tail );
 
-    while ( *tail && isspace( *tail ) )  // skip any whitespace between magnitude and SI prefix
+    // skip any whitespace between magnitude and SI prefix
+    while ( *tail && isspace( *tail ) )  
     {
       ++tail;
     }
