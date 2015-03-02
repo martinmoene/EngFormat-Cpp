@@ -26,10 +26,10 @@
 #include <limits>
 #include <sstream>
 
+#include <ctype.h>
 #include <float.h>
 #include <math.h>
 #include <stdlib.h>
-#include <string.h>
 
 /*
  * Note: using fabs() and other math functions in global namespace for
