@@ -228,9 +228,9 @@ std::string step_engineering_string( std::string const text, int digits, bool co
 namespace
 {
 
-bool starts_with( std::string const s, std::string const check )
+bool starts_with( std::string const text, std::string const start )
 {
-  return 0 == strncmp( s.c_str(), check.c_str(), check.length() );
+    return 0 == text.find( start );
 }
 
 /*
