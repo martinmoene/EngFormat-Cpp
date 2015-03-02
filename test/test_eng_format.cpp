@@ -110,7 +110,7 @@ const lest::test specification[] =
         EXPECT( approx( 98.76e-3, from_engineering_string( "98.76 ml" ) ) );
     },
 
-    CASE( "string using prefix and empty separator converts well to number" "[not-implemented]" )
+    CASE( "string using prefix and empty separator converts well to number" )
     {
         EXPECT( lest::approx( 98.76e-3 ) == from_engineering_string( "98.76m" ) );
 

@@ -29,6 +29,7 @@
 #include <float.h>
 #include <math.h>
 #include <stdlib.h>
+#include <string.h>
 
 /*
  * Note: using fabs() and other math functions in global namespace for
@@ -140,10 +141,7 @@ std::string exponent( int const degree )
     return os.str();
 }
 
-/*
- * engineering to exponent notation conversion.
- */
-std::string engineering_to_exponent( std::string text );
+int prefix_to_exponent( std::string pfx );
 
 } // anonymous namespace
 
@@ -183,10 +181,25 @@ to_engineering_string( double const value, int const digits, bool exponential, s
 
 /**
  * convert the output of to_engineering_string() into a double.
+ *
+ * The engineering presentation should not contain a unit, as the first letter
+ * is interpreted as an SI prefix, e.g. "1 T" is 1e12, not 1 (Tesla).
+ *
+ * "1.23 M"   => 1.23e+6
+ * "1.23 kPa" => 1.23e+3  (ok, but not recommended)
+ * "1.23 Pa"  => 1.23e+12 (not what's intended!)
  */
 double from_engineering_string( std::string const text )
 {
-    return strtod( engineering_to_exponent( text ).c_str(), NULL );
+    char * tail;
+    double magnitude = strtod ( text.c_str(), &tail );
+
+    while ( *tail && isspace( *tail ) )  // skip any whitespace between magnitude and SI prefix
+    {
+      ++tail;
+    }
+
+    return magnitude * pow( 10.0, prefix_to_exponent( tail ) );
 }
 
 /**
@@ -214,47 +227,28 @@ std::string step_engineering_string( std::string const text, int digits, bool co
 namespace
 {
 
-/*
- * "k" => "1e3"
- */
-std::string prefix_to_exponent( std::string const pfx )
+bool starts_with( std::string const s, std::string const check )
 {
-    for ( int i = 0; i < 2; ++i )
-    {
-        for( int k = 0; k < prefix_count; ++k )
-        {
-            if ( pfx == prefixes[0][i][k] )
-            {
-                return prefixes[1][i][k] ;
-            }
-        }
-    }
-    return "";
+  return 0 == strncmp( s.c_str(), check.c_str(), check.length() );
 }
 
 /*
- * Convert engineering presentation to presentation with exponent.
- *
- * The engineering presentation should not contain a unit, as the first letter
- * is interpreted as an SI prefix, e.g. "1 T" is 1e12, not 1 (Tesla).
- *
- * "1.23 M"   => 1.23e+6
- * "1.23 kPa" => 1.23e+3  (ok, but not recommended)
- * "1.23 Pa"  => 1.23e+12 (not what's intended!)
+ * "k" => 3
  */
-std::string engineering_to_exponent( std::string const text )
+int prefix_to_exponent( std::string const pfx )
 {
-    std::string::size_type pos = text.find( ' ' );
-
-    if ( std::string::npos == pos )
+    for ( int i = 0; i < 2; ++i )
     {
-        return text;
+        // skip prefixes[0][i][0], it matches everything
+        for( int k = 1; k < prefix_count; ++k )
+        {
+            if ( starts_with( pfx, prefixes[0][i][k] ) )
+            {
+                return ( i ? 1 : -1 ) * k * 3;
+            }
+        }
     }
-
-    const std::string magnitude = text.substr( 0, pos );
-    const std::string prefix    = text.substr( pos + 1, 1 );
-
-    return magnitude + prefix_to_exponent( prefix );
+    return 0;
 }
 
 } // anonymous namespace
