@@ -141,7 +141,29 @@ std::string exponent( int const degree )
     return os.str();
 }
 
-int prefix_to_exponent( std::string pfx );
+bool starts_with( std::string const text, std::string const start )
+{
+    return 0 == text.find( start );
+}
+
+/*
+ * "k" => 3
+ */
+int prefix_to_exponent( std::string const pfx )
+{
+    for ( int i = 0; i < 2; ++i )
+    {
+        // skip prefixes[0][i][0], it matches everything
+        for( int k = 1; k < prefix_count; ++k )
+        {
+            if ( starts_with( pfx, prefixes[0][i][k] ) )
+            {
+                return ( i ? 1 : -1 ) * k * 3;
+            }
+        }
+    }
+    return 0;
+}
 
 } // anonymous namespace
 
@@ -197,7 +219,7 @@ double from_engineering_string( std::string const text )
     // skip any whitespace between magnitude and SI prefix
     while ( *tail && isspace( *tail ) )  
     {
-      ++tail;
+        ++tail;
     }
 
     return magnitude * pow( 10.0, prefix_to_exponent( tail ) );
@@ -224,34 +246,5 @@ std::string step_engineering_string( std::string const text, int digits, bool co
 
     return to_engineering_string( ret, digits, exponential );
 }
-
-namespace
-{
-
-bool starts_with( std::string const text, std::string const start )
-{
-    return 0 == text.find( start );
-}
-
-/*
- * "k" => 3
- */
-int prefix_to_exponent( std::string const pfx )
-{
-    for ( int i = 0; i < 2; ++i )
-    {
-        // skip prefixes[0][i][0], it matches everything
-        for( int k = 1; k < prefix_count; ++k )
-        {
-            if ( starts_with( pfx, prefixes[0][i][k] ) )
-            {
-                return ( i ? 1 : -1 ) * k * 3;
-            }
-        }
-    }
-    return 0;
-}
-
-} // anonymous namespace
 
 // end of file
