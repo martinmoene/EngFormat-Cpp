@@ -1,0 +1,19 @@
+name: Test basic usage
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: gcc:latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Compile and run example
+      run: |
+        g++ -Wall -Wextra -I./src -o example1 examples/example1.cpp src/eng_format.cpp
+        ./example1
